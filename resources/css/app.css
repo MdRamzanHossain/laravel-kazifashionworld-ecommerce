@@ -1,0 +1,36 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+    --color-brand-50: #fdf2f8;
+    --color-brand-100: #fce7f3;
+    --color-brand-200: #fbcfe8;
+    --color-brand-300: #f9a8d4;
+    --color-brand-400: #f472b6;
+    --color-brand-500: #ec4899;
+    --color-brand-600: #db2777;
+    --color-brand-700: #be185d;
+    --color-brand-800: #9d174d;
+    --color-brand-900: #831843;
+    --color-brand-950: #500724;
+
+    /* Dynamic Theme Mapping from Admin Panel */
+    --color-primary: var(--color-brand-primary);
+    --color-primary-hover: var(--color-brand-primary-hover);
+    --color-accent: var(--color-brand-accent);
+}
+
+@utility no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
