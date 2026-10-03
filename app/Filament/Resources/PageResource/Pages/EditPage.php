@@ -16,7 +16,7 @@ class EditPage extends EditRecord
             Actions\Action::make('view_live')
                 ->label('View Public Page')
                 ->icon('heroicon-m-arrow-top-right-on-square')
-                ->url(fn () => route('page.show', $this->record->slug))
+                ->url(fn () => url('/' . ltrim($this->record->slug, '/')))
                 ->openUrlInNewTab(),
             Actions\DeleteAction::make(),
         ];

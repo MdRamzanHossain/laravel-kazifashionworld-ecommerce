@@ -104,5 +104,5 @@ Route::get('/page/{slug}', function (string $slug) {
     return redirect()->to('/' . $slug, 301);
 });
 
-// Top-Level Custom Slug Pages (e.g. /about-us, /authenticity-guarantee)
-Route::get('/{slug}', PageShow::class)->name('page.show');
+// Top-Level & Multi-Segment Custom Pages (e.g. /about-us, /product-category/womens/sharara)
+Route::get('/{slug}', PageShow::class)->where('slug', '.*')->name('page.show');

@@ -10,19 +10,30 @@ class Page extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'is_active'      => 'boolean',
-        'show_in_footer' => 'boolean',
-        'show_in_header' => 'boolean',
-        'sort_order'     => 'integer',
+        'is_active'        => 'boolean',
+        'show_in_footer'   => 'boolean',
+        'show_in_header'   => 'boolean',
+        'is_full_width'    => 'boolean',
+        'hide_header_hero' => 'boolean',
+        'sort_order'       => 'integer',
     ];
 
     protected static function boot()
     {
         parent::boot();
 
-        static::creating(function ($page) {
-            if (empty($page->slug)) {
+        static::saving(function ($page) {
+            if (!empty($page->slug)) {
+                $page->slug = trim($page->slug, '/');
+            } elseif (empty($page->slug) && !empty($page->title)) {
                 $page->slug = Str::slug($page->title);
+            }
+
+            // Ensure custom fields don't throw 500 if columns are not migrated yet
+            foreach (['is_full_width', 'hide_header_hero', 'custom_css', 'custom_js'] as $field) {
+                if (isset($page->attributes[$field]) && !\Illuminate\Support\Facades\Schema::hasColumn('pages', $field)) {
+                    unset($page->attributes[$field]);
+                }
             }
         });
     }
@@ -39,6 +50,6 @@ class Page extends Model
 
     public function getUrlAttribute(): string
     {
-        return route('page.show', $this->slug);
+        return url('/' . ltrim($this->slug ?? '', '/'));
     }
 }

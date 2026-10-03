@@ -11,12 +11,20 @@ class PageShow extends Component
 
     public function mount(string $slug): void
     {
-        $this->slug = $slug;
+        $this->slug = trim($slug, '/');
     }
 
     public function render()
     {
-        $page = Page::where('slug', $this->slug)
+        $cleanSlug = trim($this->slug, '/');
+
+        $page = Page::where(function ($query) use ($cleanSlug) {
+                $query->where('slug', $cleanSlug)
+                      ->orWhere('slug', '/' . $cleanSlug)
+                      ->orWhere('slug', $cleanSlug . '/')
+                      ->orWhere('slug', '/' . $cleanSlug . '/')
+                      ->orWhere('slug', $this->slug);
+            })
             ->where('is_active', true)
             ->firstOrFail();
 
